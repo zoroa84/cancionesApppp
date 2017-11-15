@@ -1,0 +1,9 @@
+
+	
+	
+		$("#bt-submit").change(function(){
+		if($("#email") != " "  && $("#nombre")!= " " )){
+		$("#bt-submit").removeClass(".bt-disabled");
+		}
+	});
+	

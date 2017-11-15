@@ -1,0 +1,23 @@
+ %>
+            
+        <ol data-list="user">    
+        <c:forEach items="${pageScope.top5}" var="cancion" varStatus="iteration">
+        	<li>
+        			<span class="id">${iteration.index+1}</span>
+        	 		<img src="${cancion.cover}" alt="imagen album de ${cancion.nombre}">
+        	 		<div class="content-data">
+        	 			<span class="name">${cancion.nombre}</span>
+        	 			<span class="email">${cancion.artista}</span>
+        	 		</div>
+        	 		<div class="content-pass">
+        	 			<span class="${ cancion.getDuracionSegundos()>60 ?'text-red':'normal'}">${cancion.duracion}</span>        	 			
+        	 		</div>
+        	 </li>		
+        </c:forEach>    
+        </ol>    
+            
+            
+        
+        
+        <hr>
+        <% 
