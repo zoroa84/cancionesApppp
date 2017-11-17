@@ -1,78 +1,96 @@
 body {
-  min-height: 2000px;
-  padding-top: 70px;
+	min-height: 2000px;
+	padding-top: 70px;
 }
 
-.navbar-brand img{
+.navbar-brand img {
 	width: 35px;
 	height: 35px;
 }
 
-
-table img{
+table img {
 	width: 100%;
 	height: auto;
 	max-width: 150px;
 	max-height: 150px;
 }
 
-#span_password{
+#span_password {
 	width: 70px;
 	display: inline-block;
 }
 
-.title{
+.title {
 	font-size: 0.7em !important;
 	margin-right: 5px;
-	float:left;
+	float: left;
 	margin-top: 3px;
 }
 
-.text-red{
+.text-red {
 	color: red !important;
 }
 
 /*  data-list=user
 ***********************************/
-
-ol[data-list='user']{
+ol[data-list='user'] {
 	list-style: none;
 }
 
-ol[data-list='user'] li{
+ol[data-list='user'] li {
 	display: flex;
 	border-bottom: 1px solid #939090;
 	margin-top: 20px;
 	padding-bottom: 10px;
-}	
-
-ol[data-list='user'] .id{
-    font-size: 3.6em;
-    color: #939090;
-    width: 75px;
-    text-align: right;
 }
 
-ol[data-list='user'] img{
+ol[data-list='user'] .id {
+	font-size: 3.6em;
+	color: #939090;
+	width: 75px;
+	text-align: right;
+}
+
+ol[data-list='user'] img {
 	width: 65px;
 	height: 65px;
 	margin-left: 15px;
-} 
+}
 
-ol[data-list='user'] .content-data{
+ol[data-list='user'] .content-data {
 	display: flex;
 	flex-direction: column;
 	margin-left: 20px;
 	flex-grow: 2;
 }
 
-ol[data-list='user'] .name{
+ol[data-list='user'] .name {
 	font-weight: 600;
 	color: #0099CC;
 	font-size: 2em;
 }
-ol[data-list='user'] .email{	
+
+ol[data-list='user'] .email {
 	color: #939090;
 	font-size: 1.2em;
 }
 
+div#uno {
+	width :30%!important;display:inline-block!important;
+}
+
+div.dos {
+	widh: 100% !important;
+	display: inline-block;
+}
+
+form.tres {
+	width: 50%;
+	display: inline-block;
+	padding-left: 100px;
+}
+
+form.tres label{
+	display: inline-block;
+	width: 35%;
+}

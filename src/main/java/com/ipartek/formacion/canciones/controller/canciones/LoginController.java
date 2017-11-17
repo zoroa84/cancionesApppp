@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ipartek.formacion.canciones.modelo.dao.CancionDAO;
 import com.ipartek.formacion.canciones.modelo.dao.UsuarioDAO;
+import com.ipartek.formacion.canciones.modelo.pojo.ReporteDAO;
 import com.ipartek.formacion.canciones.pojo.Usuario;
 
 /**
@@ -24,23 +26,30 @@ public class LoginController extends HttpServlet {
 	private static final int EXPIRED_TIME = 60 * 5; // 5min
 	private static final int EXPIRED_TIME_COOKIES = 60 * 60 * 24 * 365; // 1 year
 	private static final String VIEW_LOGIN = "login.jsp";
-	private static final String VIEW_HOME = "frontoffice/canciones/index.jsp";
+	private static final String VIEW_HOME_BACKOFFICE = "backoffice/index.jsp";
+	private static final String VIEW_HOME_FRONTOFFICE = "frontoffice/index.jsp";
 
 	private static String msg = "Error inesperado, sentimos las molestias :-(";
 
 	private UsuarioDAO dao;
+	private CancionDAO daoCancion;
+	private ReporteDAO daoReporte;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 
 		dao = UsuarioDAO.getInstance();
+		daoCancion = CancionDAO.getInstance();
+		daoReporte = ReporteDAO.getInstance();
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
 		dao = null;
+		daoCancion = null;
+		daoReporte = null;
 	}
 
 	/**
@@ -82,13 +91,23 @@ public class LoginController extends HttpServlet {
 
 			if (usuario != null) {
 				msg = String.format("Ongi Etorri (%s)%s", usuario.getId(), usuario.getNombre());
-				view = VIEW_HOME;
 
 				// guardar usuario en session
 				session.setAttribute("usuario_logeado", usuario);
 				session.setAttribute("idioma", idioma);
 
 				gestionCookies(remenberme, idioma, usuario, response);
+				
+				if (usuario.getRol().getId() == Usuario.ROL_ADMIN) {
+					
+				//if (usuario.getId() == usuario.ROL_ADMIN) {
+					
+					request.setAttribute("top10", daoCancion.top10());
+					request.setAttribute("report", daoReporte.getLikes());
+					view = VIEW_HOME_BACKOFFICE;
+				} else {
+					view = VIEW_HOME_FRONTOFFICE;
+				}
 
 			} else {
 				msg = "Lo sentimos pero las credenciales no son correctas, prueba de nuevo por favor.";

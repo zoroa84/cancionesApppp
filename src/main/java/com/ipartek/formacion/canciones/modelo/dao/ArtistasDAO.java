@@ -11,6 +11,8 @@ import java.util.List;
 import com.ipartek.formacion.canciones.excepciones.CancionException;
 import com.ipartek.formacion.canciones.modelo.ConnectionManager;
 import com.ipartek.formacion.canciones.modelo.pojo.Artista;
+import com.ipartek.formacion.canciones.modelo.pojo.Cancion;
+import com.ipartek.formacion.canciones.pojo.Usuario;
 
 public class ArtistasDAO implements Persistable<Artista> {
 
@@ -155,47 +157,37 @@ public class ArtistasDAO implements Persistable<Artista> {
 	 *
 	 */
 
-	public List<Artista> findAllByCancion(int idCancion) {
-		// TODO terminarlo
+	public List<Cancion> findAllByUser(Usuario uLogeado) {
 
-		/*
-		 * //A MANIJA hard-coreado o -codeado? ArrayList<Artista> artistas = new
-		 * ArrayList<Artista>(); artistas.add(new Artista(2, "Fito")); artistas.add(new
-		 * Artista(3, "Extremo"));
-		 */
+		ArrayList<Cancion> canciones = new ArrayList<Cancion>();
 
-		ArrayList<Artista> artistas = new ArrayList<Artista>();
-		String sql = "SELECT a.id, c.titulo, a.nombre FROM cancion as c, artista as a, cancion_has_artista as ca WHERE c.id = ca.cancion_id AND ca.artista_id = a.id AND c.id = ? ORDER BY c.id DESC LIMIT ?;";
+		String sql = "select c.titulo, c.duracion from usuario as u, cancion as c where c.usuario_id = u.id and u.id = ?;";
+		if (uLogeado != null) {
+			uLogeado.getRol().getId();
+			try (Connection con = ConnectionManager.open(); PreparedStatement pst = con.prepareStatement(sql);) {
 
-		try (Connection con = ConnectionManager.open(); PreparedStatement pst = con.prepareStatement(sql);) {
+				pst.setInt(1, uLogeado.getId());
+				try (ResultSet rs = pst.executeQuery();) {
+					while (rs.next()) {
+						Cancion c = new Cancion();
+						c.setTitulo(rs.getString("titulo"));
+						c.setCover(rs.getString("cover"));
 
-			pst.setInt(1, idCancion);
-			pst.setInt(2, Persistable.LIMIT);
+						// mapear campos que faltan
 
-			try (ResultSet rs = pst.executeQuery();) {
+						canciones.add(c);
 
-				Artista a;
-				while (rs.next()) {
-					a = mapeo(rs);
-					artistas.add(a);
-					a = null;
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-
 		}
-		return artistas;
+		return canciones;
 
-		/**
-		 * SELECT c.titulo, a.nombre FROM cancion as c, artista as a,
-		 * cancion_has_artista as ca WHERE c.id = ca.cancion_id AND ca.artista_id = a.id
-		 * AND c.id =3
-		 **/
-
-		// return null;
 	}
 
 	Artista mapeo(ResultSet rs) throws SQLException, CancionException {

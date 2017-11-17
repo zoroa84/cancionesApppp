@@ -42,7 +42,7 @@
                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="${pageContext.request.contextPath}/backoffice/profile.jsp"><i class="fa fa-user fa-fw"></i> User Profile</a></li>                        
+                        <li><a href="${pageContext.request.contextPath}/frontoffice/profile.jsp"><i class="fa fa-user fa-fw"></i> User Profile</a></li>                        
                         <li class="divider"></li>
                         <li><a href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
                     </ul>
@@ -50,7 +50,7 @@
                 </li>       
           </ul>
           
-          <form class="navbar-form navbar-right" action="${pageContext.request.contextPath}/backoffice/canciones" method="get">
+          <form class="navbar-form navbar-right" action="${pageContext.request.contextPath}/frontoffice/canciones" method="get">
           	<input type="hidden" name="accion" value="<%=Acciones.BUSCAR%>">
 			<input type="search" class="form-control" name="criterio" placeholder="Buscar por nombre o artista" required>            
           </form>

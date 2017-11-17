@@ -10,9 +10,10 @@
 	<c:when test="${ usuario.id == -1 }"><h1>Crear nuevo usuario</h1></c:when>
 	<c:otherwise><h1>Detalle ${usuario.nombre}</h1></c:otherwise>
 </c:choose>
-
-<form action="${pageContext.request.contextPath}/backoffice/usuarios" method="post">
-
+<div style="width: 30%;display: inline-block;" id="uno" ><img style="width:100%;display: inline-block; " class="dos" src="${usuario.avatar }"> </div>
+<form action="${pageContext.request.contextPath}/backoffice/usuarios" method="post" class="tres" style="width: 50%;display: inline-block;">
+	
+	
 	<!-- campos ocultos -->
 	<input type="hidden" name="id" value="${usuario.id}">
 	<input type="hidden" name="accion" value="<%=Acciones.CREAR_MODIFICAR%>">
@@ -47,5 +48,6 @@
 	<input type="submit" value="MODIFICAR">
 </form>
 
+${canciones }
 
 <%@include file="../../includes/footer.jsp" %>

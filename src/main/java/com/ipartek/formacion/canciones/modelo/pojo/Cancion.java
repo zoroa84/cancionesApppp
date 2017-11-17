@@ -10,7 +10,7 @@ import com.ipartek.formacion.canciones.utilidades.Utilidades;
 public class Cancion {
 
 	private int id;
-	private String nombre;
+	private String titulo;
 	private String artista;
 	private String duracion;
 	private String cover;
@@ -25,7 +25,7 @@ public class Cancion {
 		super();
 		this.id = -1;
 		this.likes = 0;
-		this.nombre = "";
+		this.titulo = "";
 		this.artista = "";
 		this.duracion = "0:00";
 		this.cover = "";
@@ -36,33 +36,33 @@ public class Cancion {
 		this.artistas = new ArrayList<Artista>();
 	}
 
-	public Cancion(int id, String nombre, String artista, String cover) {
+	public Cancion(int id, String titulo, String artista, String cover) {
 		this();
 		this.id = id;
-		this.nombre = nombre;
+		this.titulo = titulo;
 		this.artista = artista;
 		this.cover = cover;
 	}
 
-	public Cancion(int id, String nombre, String artista, String duracion, String cover) throws CancionException {
+	public Cancion(int id, String titulo, String artista, String duracion, String cover) throws CancionException {
 		this();
 		this.id = id;
-		this.nombre = nombre;
+		this.titulo = titulo;
 		this.artista = artista;
 		this.setDuracion(duracion);
 		this.cover = cover;
 	}
 
-	public Cancion(String nombre, String artista, String duracion) throws CancionException {
+	public Cancion(String titulo, String artista, String duracion) throws CancionException {
 		this();
-		this.nombre = nombre;
+		this.titulo = titulo;
 		this.artista = artista;
 		this.setDuracion(duracion);
 		this.cover = "";
 	}
 
-	public Cancion(String nombre, String artista, String duracion, String cover) throws CancionException {
-		this(nombre, artista, duracion);
+	public Cancion(String titulo, String artista, String duracion, String cover) throws CancionException {
+		this(titulo, artista, duracion);
 		this.cover = cover;
 	}
 
@@ -121,12 +121,12 @@ public class Cancion {
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getTitulo() {
+		return titulo;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
 	public String getArtista() {
@@ -191,7 +191,7 @@ public class Cancion {
 
 	@Override
 	public String toString() {
-		return "Cancion [id=" + id + ", nombre=" + nombre + ", artista=" + artista + ", duracion=" + duracion
+		return "Cancion [id=" + id + ", titulo=" + titulo + ", artista=" + artista + ", duracion=" + duracion
 				+ ", cover=" + cover + ", genero=" + genero + ", usuario=" + usuario + ", alta=" + alta
 				+ ", modificacion=" + modificacion + ", artistas=" + artistas + ", likes=" + likes + "]";
 	}

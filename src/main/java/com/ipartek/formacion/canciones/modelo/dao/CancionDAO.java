@@ -31,7 +31,7 @@ public class CancionDAO implements Persistable<Cancion> {
 	}
 
 	/**
-	 * Busca canciones que coincidan el nombre o artista de la
+	 * Busca canciones que coincidan el titulo o artista de la
 	 * <code>Cancion</code>.<br>
 	 * No es keysesentive.<br>
 	 *
@@ -42,7 +42,7 @@ public class CancionDAO implements Persistable<Cancion> {
 	 */
 	public List<Cancion> findByNameOrArtist(String criterio) {
 		ArrayList<Cancion> canciones = new ArrayList<Cancion>();
-		String sql = "SELECT `id`, `nombre`, `artista`, `duracion`, `cover` FROM `cancion` WHERE  `nombre` LIKE ? OR `artista` LIKE ? ORDER BY `id` DESC LIMIT ?;";
+		String sql = "SELECT `id`, `titulo`, `artista`, `duracion`, `cover` FROM `cancion` WHERE  `titulo` LIKE ? OR `artista` LIKE ? ORDER BY `id` DESC LIMIT ?;";
 		try (Connection con = ConnectionManager.open(); PreparedStatement pst = con.prepareStatement(sql);) {
 
 			pst.setString(1, "%" + criterio + "%");
@@ -106,7 +106,7 @@ public class CancionDAO implements Persistable<Cancion> {
 
 		) {
 
-			pst.setString(1, c.getNombre());
+			pst.setString(1, c.getTitulo());
 			pst.setString(2, c.getDuracion());
 			pst.setInt(3, c.getGenero().getId());
 
@@ -146,7 +146,7 @@ public class CancionDAO implements Persistable<Cancion> {
 		}
 
 		try (Connection con = ConnectionManager.open(); PreparedStatement pst = con.prepareStatement(sql);) {
-			pst.setString(1, c.getNombre());
+			pst.setString(1, c.getTitulo());
 			pst.setInt(2, c.getGenero().getId());
 			pst.setString(3, c.getDuracion());
 
@@ -222,8 +222,8 @@ public class CancionDAO implements Persistable<Cancion> {
 		Cancion c = null;
 		if (rs != null) {
 			c = new Cancion();
-			c.setId(rs.getInt("id"));  //"c.id"
-			c.setNombre(rs.getString("titulo"));
+			c.setId(rs.getInt("id")); // "c.id"
+			c.setTitulo(rs.getString("titulo"));
 			c.setAlta(rs.getString("alta"));
 			c.setModificacion(rs.getString("modificacion"));
 
@@ -236,7 +236,8 @@ public class CancionDAO implements Persistable<Cancion> {
 			c.setGenero(g);
 			// usuario
 			Usuario u = new Usuario();
-			//g.setId(rs.getInt("genero_id"));  //AQUI NO SERIA u.setId(rs.getInt("usuario_id"));  ??
+			// g.setId(rs.getInt("genero_id")); //AQUI NO SERIA
+			// u.setId(rs.getInt("usuario_id")); ??
 			u.setId(rs.getInt("usuario_id"));
 			u.setNombre(rs.getString("usuario_nombre"));
 			c.setUsuario(u);
@@ -263,13 +264,49 @@ public class CancionDAO implements Persistable<Cancion> {
 		return resul;
 	}
 
-	public List<Cancion> findAllByUser(Usuario uLogeado) {
+	// crear top 10 y pegar todo el findAll
 
+	public List<Cancion> top10() {
 		ArrayList<Cancion> canciones = new ArrayList<Cancion>();
-		if (uLogeado != null) {
-			uLogeado.getRol().getId();
+		String sql = "SELECT * FROM v_top10;";
+		try (Connection con = ConnectionManager.open();
+				PreparedStatement pst = con.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery();) {
+			Cancion c;
+			while (rs.next()) {
+
+				c = new Cancion();
+				c.setTitulo(rs.getString("titulo"));
+				c.setLikes(rs.getInt("likes"));
+
+				canciones.add(c);
+				c = null;
+			} // while
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 		}
+
 		return canciones;
+	}
+
+	public int countLikes(int id) {
+		int likes = 0;
+		String sql = "SELECT COUNT(*) AS total_likes FROM likes WHERE cancion_id = ?";
+		try (Connection con = ConnectionManager.open(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setInt(1, id);
+
+			try (ResultSet rs = pst.executeQuery();) {
+				if (rs.next()) {
+					likes = rs.getInt("total_likes");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		return likes;
 	}
 
 }
